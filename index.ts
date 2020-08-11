@@ -25,6 +25,10 @@ app.use('/a', function (req, res) {
   res.send({ ok: '111' });
 });
 
+app.use('/b', function (req, res) {
+  res.send({ ok: '111' });
+});
+
 app.listen(app.get('port'), () => {
   console.log(` app listening on port ${app.get('port')}!`);
 });
