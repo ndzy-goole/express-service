@@ -26,7 +26,7 @@ app.get('/getNote', (req, res) => {
     console.log(doc);
     if (err) console.log(err);
     if (doc.length === 0) {
-      db.insert([{ label: 'note', value: '' }], (err_, doc_) => {});
+      db.insert({ label: 'note', value: '' }, (err_, doc_) => {});
       res.send({
         msg: 'ok',
         note: ''
@@ -42,16 +42,12 @@ app.get('/getNote', (req, res) => {
 
 app.post('/updateNote', (req, res) => {
   const note = req.body.note;
-  db.update(
-    {
-      label: 'note'
-    },
-    {
-      $set: {
-        value: note
-      }
-    }
-  );
+  
+  db.update({ label: 'note' }, { $set: { value: note } }, {}, () => {
+    db.find({ label: 'note' }, (err: any, doc: any) => {
+      console.log(doc);
+    });
+  });
   res.send({
     msg: 'ok'
   });
