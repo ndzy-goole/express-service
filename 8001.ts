@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import db from './db'
+import db from './db';
 
 const app = express();
 
@@ -21,40 +21,44 @@ app.use(
   })
 );
 
-app.get("/getNote",(req,res)=>{
-  db.find({ label: 'note' }, (err:any, doc:any) => {
-    if(err) console.log(err)
+app.get('/getNote', (req, res) => {
+  db.find({ label: 'note' }, (err: any, doc: any) => {
+    console.log(doc);
+    if (err) console.log(err);
     if (doc.length === 0) {
       db.insert([{ label: 'note', value: '' }], (err_, doc_) => {});
       res.send({
-        note: "",
-      })
+        msg: 'ok',
+        note: ''
+      });
     } else {
       res.send({
-        note: doc.value,
-      })
+        msg: 'ok',
+        note: doc[0].value
+      });
     }
-  })
-})
+  });
+});
 
-app.get("/getNote",(req,res)=>{
-  db.find({ label: 'note' }, (err:any, doc:any) => {
-    if(err) console.log(err)
-    if (doc.length === 0) {
-      db.insert([{ label: 'note', value: '' }], (err_, doc_) => {});
-      res.send({
-        note: "",
-      })
-    } else {
-      res.send({
-        note: doc.value,
-      })
+app.post('/updateNote', (req, res) => {
+  const note = req.body.note;
+  db.update(
+    {
+      label: 'note'
+    },
+    {
+      $set: {
+        value: note
+      }
     }
-  })
-})
+  );
+  res.send({
+    msg: 'ok'
+  });
+});
 
-app.use((req, res) => {
-  res.status(404).send('Not found')
-})
+// app.use((req, res) => {
+//   res.status(404).send('Not found');
+// });
 
 app.listen(app.get('port'));
