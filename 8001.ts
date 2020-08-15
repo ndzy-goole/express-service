@@ -23,7 +23,6 @@ app.use(
 
 app.get('/getNote', (req, res) => {
   db.find({ label: 'note' }, (err: any, doc: any) => {
-    console.log(doc);
     if (err) console.log(err);
     if (doc.length === 0) {
       db.insert({ label: 'note', value: '' }, (err_, doc_) => {});
