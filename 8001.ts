@@ -42,19 +42,12 @@ app.get('/getNote', (req, res) => {
 
 app.post('/updateNote', (req, res) => {
   const note = req.body.note;
-  
+
   db.update({ label: 'note' }, { $set: { value: note } }, {}, () => {
-    db.find({ label: 'note' }, (err: any, doc: any) => {
-      console.log(doc);
-    });
   });
   res.send({
     msg: 'ok'
   });
 });
-
-// app.use((req, res) => {
-//   res.status(404).send('Not found');
-// });
 
 app.listen(app.get('port'));
