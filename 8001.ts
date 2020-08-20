@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import db from './db';
+import route from './route';
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use(
     optionsSuccessStatus: 200
   })
 );
+
+app.use('/', route.utils.infoUtils);
 
 app.get('/getNote', (req, res) => {
   db.find({ label: 'note' }, (err: any, doc: any) => {
@@ -42,8 +45,7 @@ app.get('/getNote', (req, res) => {
 app.post('/updateNote', (req, res) => {
   const note = req.body.note;
 
-  db.update({ label: 'note' }, { $set: { value: note } }, {}, () => {
-  });
+  db.update({ label: 'note' }, { $set: { value: note } }, {}, () => {});
   res.send({
     msg: 'ok'
   });
